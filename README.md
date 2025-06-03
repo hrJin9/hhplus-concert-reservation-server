@@ -1,13 +1,23 @@
 ## 프로젝트
 
-## Getting Started
+# 분석 및 설계
 
-### Prerequisites
+### 1. 문제 정의 및 요구사항 
+https://github.com/hrJin9/hhplus-server-java/issues/1
 
-#### Running Docker Containers
+### 2. 유저 플로우
+(미완성)
 
-`local` profile 로 실행하기 위하여 인프라가 설정되어 있는 Docker 컨테이너를 실행해주셔야 합니다.
+### 3. 시퀀스 다이어그램
+(미완성) https://github.com/hrJin9/hhplus-server-java/issues/2
 
-```bash
-docker-compose up -d
-```
+
+### 3. 인프라 구성도
+https://github.com/hrJin9/hhplus-server-java/issues/11
+
+### 4. ERD 다이어그램
+https://github.com/hrJin9/hhplus-server-java/issues/4
+
+### 5. 마일스톤
+(미완성) https://github.com/hrJin9/hhplus-server-java/milestones
+- 추후 notion 등 가시적인 것으로 수정
