@@ -10,8 +10,8 @@ public class ApiException extends RuntimeException {
     private final HttpStatus status;
     private final LocalDateTime time;
 
-    public ApiException(HttpStatus status, String message) {
-        super(message);
+    public ApiException(HttpStatus status, ErrorCode errorCode) {
+        super(errorCode.getMessage());
         this.status = status;
         this.time = LocalDateTime.now();
     }
