@@ -18,7 +18,9 @@ public enum ErrorCode {
 
     SEAT_NOT_FOUND("S001", "좌석을 찾을 수 없습니다."),
     SEAT_NOT_AVAILABLE("S002", "예약 가능한 좌석이 아닙니다."),
-    SEAT_NOT_ACCEPTABLE("S003", "이미 선택된 좌석입니다.");
+    SEAT_NOT_ACCEPTABLE("S003", "이미 선택된 좌석입니다."),
+
+    CONCERT_NOT_FOUND("C001", "콘서트 정보가 존재하지 않습니다.");
 
     private final String code;
     private final String message;
