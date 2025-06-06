@@ -3,9 +3,6 @@ package kr.hhplus.be.server.infrastructure.persistence;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.Filters;
@@ -21,16 +18,15 @@ import java.time.LocalDateTime;
 @Filters({
         @Filter(name = "deletedFilter")
 })
-@Getter
 public class AuditableEntity {
-    @Column
-    private Boolean deleted = false;
+    @Column(nullable = false)
+    public Boolean deleted = false;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    public LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    public LocalDateTime updatedAt;
 
     public void delete() {
         this.deleted = true;

@@ -2,8 +2,8 @@ package kr.hhplus.be.server.common.enums;
 
 public enum SeatStatus {
     AVAILABLE,
+    HOLD,
     RESERVED,
-    BOOKED,
     EXPIRED,
     CANCELED
 }
