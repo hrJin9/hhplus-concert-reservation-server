@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.point.web;
 
 import jakarta.validation.Valid;
+import kr.hhplus.be.server.interfaces.web.queue_token.annotation.QueueAuth;
+import kr.hhplus.be.server.interfaces.web.queue_token.resolver.ValidQueueToken;
 import kr.hhplus.be.server.point.service.PointService;
 import kr.hhplus.be.server.point.service.dto.PointResult;
 import kr.hhplus.be.server.point.web.request.ChargePointRequest;
@@ -20,14 +22,18 @@ public class PointController {
     private final PointService pointService;
 
     @PostMapping("/charge")
-    public ResponseEntity<PointResponse> charge(@RequestBody @Valid ChargePointRequest request) {
-        PointResult pointResult = pointService.charge(request.toCommand());
+    public ResponseEntity<PointResponse> charge(@QueueAuth ValidQueueToken queueToken,
+                                                @RequestBody @Valid ChargePointRequest request
+    ) {
+        PointResult pointResult = pointService.charge(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(PointResponse.from(pointResult));
     }
 
     @PostMapping("/use")
-    public ResponseEntity<PointResponse> use(@RequestBody @Valid UsePointRequest request) {
-        PointResult pointResult = pointService.use(request.toCommand());
+    public ResponseEntity<PointResponse> use(@QueueAuth ValidQueueToken queueToken,
+                                             @RequestBody @Valid UsePointRequest request
+    ) {
+        PointResult pointResult = pointService.use(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(PointResponse.from(pointResult));
     }
 }

@@ -29,8 +29,8 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     @Transactional
-    public PointResult charge(ChargePointCommand command) {
-        Point point = getOrCreatePoint(command.userId());
+    public PointResult charge(Long userId, ChargePointCommand command) {
+        Point point = getOrCreatePoint(userId);
 
         PointHistory history = point.charge(command.amount());
 
@@ -46,8 +46,8 @@ public class PointServiceImpl implements PointService {
      * @return
      */
     @Override
-    public PointResult use(UsePointCommand command) {
-        Point point = pointRepository.findByUserId(command.userId())
+    public PointResult use(Long userId, UsePointCommand command) {
+        Point point = pointRepository.findByUserId(userId)
                 .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, ErrorCode.POINT_NOT_FOUND));
 
         try {
@@ -58,6 +58,7 @@ public class PointServiceImpl implements PointService {
 
             return PointResult.of(history);
         } catch (InsufficientPointException e) {
+            // TODO : 포인트 부족 -> 결제하기
             throw new ApiException(HttpStatus.BAD_REQUEST, e.getErrorCode());
         }
     }

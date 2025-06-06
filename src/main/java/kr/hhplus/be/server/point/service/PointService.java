@@ -5,7 +5,7 @@ import kr.hhplus.be.server.point.service.dto.PointResult;
 import kr.hhplus.be.server.point.service.dto.UsePointCommand;
 
 public interface PointService {
-    PointResult charge(ChargePointCommand command);
+    PointResult charge(Long userId, ChargePointCommand command);
 
-    PointResult use(UsePointCommand command);
+    PointResult use(Long userId, UsePointCommand command);
 }
