@@ -1,16 +1,18 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
 import kr.hhplus.be.server.domain.repository.ConcertSeatLockRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 
-@RequiredArgsConstructor
 @Repository
 public class ConcertSeatLockRedisRepository implements ConcertSeatLockRepository {
-    private final RedisTemplate<String, Long> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public ConcertSeatLockRedisRepository(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public boolean acquire(Long concertSeatId, Long userId) {
@@ -24,7 +26,7 @@ public class ConcertSeatLockRedisRepository implements ConcertSeatLockRepository
     @Override
     public void release(Long concertSeatId, Long userId) {
         String key = "lock:seat:" + concertSeatId;
-        Long owner = redisTemplate.opsForValue()
+        Long owner = (Long) redisTemplate.opsForValue()
                 .get(key);
 
         if (owner.equals(userId)) {

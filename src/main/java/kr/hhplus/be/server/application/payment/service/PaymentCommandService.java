@@ -5,12 +5,13 @@ import kr.hhplus.be.server.application.payment.dto.PaymentResult;
 import kr.hhplus.be.server.common.enums.PaymentStatus;
 import kr.hhplus.be.server.domain.model.Payment;
 import kr.hhplus.be.server.domain.repository.PaymentRepository;
-import kr.hhplus.be.server.interfaces.web.queue_token.resolver.ValidQueueToken;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class PaymentCommandService {
     private final PaymentRepository paymentRepository;
+
+    public PaymentCommandService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     public PaymentResult placePayment(Long userId, PlacePaymentCommand command) {
         Payment payment = Payment.create(userId, command.amount(), command.paymentMethod());

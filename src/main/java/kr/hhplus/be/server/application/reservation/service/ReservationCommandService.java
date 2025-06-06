@@ -10,16 +10,19 @@ import kr.hhplus.be.server.domain.repository.ConcertSeatRepository;
 import kr.hhplus.be.server.domain.repository.ReservationRepository;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
-import kr.hhplus.be.server.interfaces.web.queue_token.resolver.ValidQueueToken;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 public class ReservationCommandService {
     private final ReservationRepository reservationRepository;
     private final ConcertSeatLockRepository seatLockRepository;
     private final ConcertSeatRepository concertSeatRepository;
+
+    public ReservationCommandService(ReservationRepository reservationRepository, ConcertSeatLockRepository seatLockRepository, ConcertSeatRepository concertSeatRepository) {
+        this.reservationRepository = reservationRepository;
+        this.seatLockRepository = seatLockRepository;
+        this.concertSeatRepository = concertSeatRepository;
+    }
 
     /**
      * 좌석 예약 유스케이스
