@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.exception;
 
+import kr.hhplus.be.server.domain.exception.DomainException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,17 @@ public class GlobalExceptionHandler {
                 .status(e.getStatus())
                 .body(new ErrorResponse(e.getStatus(), e.getMessage(), e.getTime(), null));
     }
+
+    @ExceptionHandler(value = DomainException.class)
+    public ResponseEntity<ErrorResponse> handleDomainException(DomainException e) {
+        log.warn("DomainException 발생 - status: {}, message: {}, time: {}",
+                e.getStatus(), e.getMessage(), e.getTime());
+
+        return ResponseEntity
+                .status(e.getStatus())
+                .body(new ErrorResponse(e.getStatus(), e.getMessage(), e.getTime(), null));
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {

@@ -2,15 +2,16 @@ package kr.hhplus.be.server.domain.exception;
 
 import kr.hhplus.be.server.exception.ErrorCode;
 
-public class InsufficientPointException extends RuntimeException {
+public class InsufficientPointException extends DomainException {
     private final ErrorCode errorCode;
 
-    public InsufficientPointException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    @Override
+    public ErrorCode errorCode() {
+        return this.errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public InsufficientPointException(ErrorCode errorCode) {
+        super(errorCode);
+        this.errorCode = errorCode;
     }
 }
