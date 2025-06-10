@@ -43,19 +43,19 @@ public class ConcertSeat {
         this.id = id;
     }
 
-    public static ConcertSeat reconstitute(Long id, Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
+    public static ConcertSeat create(Long concertId, Long seatId, Long price) {
         return new ConcertSeat(
-                id,
+                null,
                 concertId,
                 seatId,
-                seatStatus,
+                SeatStatus.AVAILABLE,
                 price
         );
     }
 
-    public static ConcertSeat create(Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
+    public static ConcertSeat reconstitute(Long id, Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
         return new ConcertSeat(
-                null,
+                id,
                 concertId,
                 seatId,
                 seatStatus,

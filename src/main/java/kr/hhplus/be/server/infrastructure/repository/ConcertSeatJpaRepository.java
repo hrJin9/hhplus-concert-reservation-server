@@ -19,9 +19,10 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     }
 
     @Override
-    public Optional<ConcertSeat> findById(Long id) {
+    public ConcertSeat findById(Long id) {
         return jpa.findById(id)
-                .map(this::toDomain);
+                .map(this::toDomain)
+                .orElseThrow(() -> new ConcertSeatNotFoundException(ErrorCode.SEAT_NOT_FOUND));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.config.application.reservation;
 
-import kr.hhplus.be.server.application.reservation.service.ReservationCommandService;
+import kr.hhplus.be.server.application.reservation.ReservationCommandService;
 import kr.hhplus.be.server.domain.repository.ConcertSeatLockRepository;
 import kr.hhplus.be.server.domain.repository.ConcertSeatRepository;
 import kr.hhplus.be.server.domain.repository.ReservationRepository;

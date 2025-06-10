@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.domain.model;
 
+
 public class Reservation {
     private Long id;
     private final Long userId;
@@ -23,8 +24,12 @@ public class Reservation {
         return concertSeatId;
     }
 
-    public void assignId(Long id) {
-        this.id = id;
+    public static Reservation create(Long userId, Long concertSeatId) {
+        return new Reservation(
+                null,
+                userId,
+                concertSeatId
+        );
     }
 
     public static Reservation reconstitute(Long id, Long userId, Long concertSeatId) {
@@ -35,11 +40,8 @@ public class Reservation {
         );
     }
 
-    public static Reservation create(Long userId, Long concertSeatId) {
-        return new Reservation(
-                null,
-                userId,
-                concertSeatId
-        );
+    public void assignId(Long id) {
+        this.id = id;
     }
+
 }

@@ -27,7 +27,8 @@ public class PaymentJpaRepository implements PaymentRepository {
                 e.id,
                 e.userId,
                 e.amount,
-                e.paymentMethod
+                e.paymentMethod,
+                e.paymentStatus
         );
     }
 
@@ -37,6 +38,7 @@ public class PaymentJpaRepository implements PaymentRepository {
         e.userId = p.getUserId();
         e.amount = p.getAmount();
         e.paymentMethod = p.getPaymentMethod();
+        e.paymentStatus = p.getPaymentStatus();
         return e;
     }
 }
