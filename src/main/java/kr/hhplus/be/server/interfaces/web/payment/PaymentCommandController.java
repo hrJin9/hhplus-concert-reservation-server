@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
 public class PaymentCommandController {
-    private final PaymentCommandService paymentCommandService;
+    private final PaymentCommandService paymentUseCase;
 
     @PostMapping
     public ResponseEntity<PlacePaymentResultResponse> place(@QueueAuth ValidQueueToken queueToken,
                                                             @RequestBody @Valid PlacePaymentRequest request
     ) {
-        PlacePaymentResult paymentResult = paymentCommandService.place(queueToken.userId(), request.toCommand());
+        PlacePaymentResult paymentResult = paymentUseCase.place(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(PlacePaymentResultResponse.from(paymentResult));
     }
 }

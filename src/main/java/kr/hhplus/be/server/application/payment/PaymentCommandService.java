@@ -2,8 +2,8 @@ package kr.hhplus.be.server.application.payment;
 
 import kr.hhplus.be.server.application.payment.dto.PlacePaymentCommand;
 import kr.hhplus.be.server.application.payment.dto.PlacePaymentResult;
-import kr.hhplus.be.server.domain.model.Payment;
-import kr.hhplus.be.server.domain.repository.PaymentRepository;
+import kr.hhplus.be.server.domain.payment.model.Payment;
+import kr.hhplus.be.server.domain.payment.repository.PaymentRepository;
 
 public class PaymentCommandService {
     private final PaymentRepository paymentRepository;

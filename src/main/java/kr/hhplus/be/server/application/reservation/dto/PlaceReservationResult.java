@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.application.reservation.dto;
 
-import kr.hhplus.be.server.domain.model.Reservation;
+import kr.hhplus.be.server.domain.reservation.model.Reservation;
 
 public record PlaceReservationResult(
         Long reservationId

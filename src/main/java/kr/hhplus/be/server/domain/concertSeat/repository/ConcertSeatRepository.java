@@ -1,6 +1,6 @@
-package kr.hhplus.be.server.domain.repository;
+package kr.hhplus.be.server.domain.concertSeat.repository;
 
-import kr.hhplus.be.server.domain.model.ConcertSeat;
+import kr.hhplus.be.server.domain.concertSeat.model.ConcertSeat;
 
 public interface ConcertSeatRepository {
     ConcertSeat findById(Long id);

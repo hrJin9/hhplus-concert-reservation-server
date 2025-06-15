@@ -1,6 +1,6 @@
-package kr.hhplus.be.server.domain.repository;
+package kr.hhplus.be.server.domain.point.repository;
 
-import kr.hhplus.be.server.domain.model.Point;
+import kr.hhplus.be.server.domain.point.model.Point;
 
 public interface PointRepository {
     Point findByUserId(Long userId);

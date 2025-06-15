@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.model;
+package kr.hhplus.be.server.domain.pointHistory.model;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.enums.TransactionType;
@@ -15,9 +15,9 @@ public class PointHistory extends AuditableEntity {
 
     private final Long pointBefore;
 
-    private Long amount;
+    private final Long amount;
 
-    private Long pointAfter;
+    private final Long pointAfter;
 
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
@@ -55,25 +55,29 @@ public class PointHistory extends AuditableEntity {
         return transactionType;
     }
 
-    public static PointHistory createChargeHistory(Long userId, Long beforePoint, Long amount, Long point) {
+    public static PointHistory charge(Long userId, Long pointBefore, Long amount, Long pointAfter) {
         return new PointHistory(
                 null,
                 userId,
-                beforePoint,
+                pointBefore,
                 amount,
-                point,
+                pointAfter,
                 TransactionType.CHARGE
         );
     }
 
-    public static PointHistory createUseHistory(Long id, Long userId, Long beforePoint, Long amount, Long point) {
+    public static PointHistory use(Long userId, Long pointBefore, Long amount, Long pointAfter) {
         return new PointHistory(
-                id,
+                null,
                 userId,
-                beforePoint,
+                pointBefore,
                 amount,
-                point,
+                pointAfter,
                 TransactionType.USE
         );
+    }
+
+    public void assignId(Long id) {
+        this.id = id;
     }
 }

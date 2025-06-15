@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.application.point;
 
 import kr.hhplus.be.server.application.point.dto.PointBalanceInfo;
-import kr.hhplus.be.server.domain.model.Point;
-import kr.hhplus.be.server.domain.repository.PointRepository;
+import kr.hhplus.be.server.domain.point.model.Point;
+import kr.hhplus.be.server.domain.point.repository.PointRepository;
 
 public class PointFindService {
     private final PointRepository pointRepository;

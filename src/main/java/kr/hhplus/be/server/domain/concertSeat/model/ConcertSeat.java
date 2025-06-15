@@ -1,7 +1,7 @@
-package kr.hhplus.be.server.domain.model;
+package kr.hhplus.be.server.domain.concertSeat.model;
 
 import kr.hhplus.be.server.common.enums.SeatStatus;
-import kr.hhplus.be.server.domain.exception.NotAvailableSeatException;
+import kr.hhplus.be.server.domain.concertSeat.exception.NotAvailableSeatException;
 import kr.hhplus.be.server.exception.ErrorCode;
 
 public class ConcertSeat {

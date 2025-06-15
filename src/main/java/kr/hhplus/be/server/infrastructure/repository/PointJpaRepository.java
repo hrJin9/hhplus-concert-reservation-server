@@ -1,9 +1,10 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
-import kr.hhplus.be.server.domain.exception.PointNotFoundException;
-import kr.hhplus.be.server.domain.model.Point;
-import kr.hhplus.be.server.domain.repository.PointRepository;
+import kr.hhplus.be.server.domain.point.exception.PointNotFoundException;
+import kr.hhplus.be.server.domain.point.model.Point;
+import kr.hhplus.be.server.domain.point.repository.PointRepository;
 import kr.hhplus.be.server.exception.ErrorCode;
+import kr.hhplus.be.server.infrastructure.persistence.PointEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,13 +22,23 @@ public class PointJpaRepository implements PointRepository {
     }
 
     @Override
-    public void save(Point point) {
-        jpa.save(point);
+    public void save(Point d) {
+        PointEntity e = toEntity(d);
+        PointEntity saved = jpa.save(e);
+        d.assignId(saved.id);
     }
 
     @Override
     public Point findOrCreatePoint(Long userId) {
         return jpa.findByUserId(userId)
                 .orElse(Point.create(userId));
+    }
+
+    private PointEntity toEntity(Point d) {
+        PointEntity e = new PointEntity();
+        e.id = d.getId();
+        e.userId = d.getUserId();
+        e.point = d.getPoint();
+        return e;
     }
 }

@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.config.application.payment;
 
 import kr.hhplus.be.server.application.payment.PaymentCommandService;
-import kr.hhplus.be.server.domain.repository.PaymentRepository;
+import kr.hhplus.be.server.domain.payment.repository.PaymentRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;

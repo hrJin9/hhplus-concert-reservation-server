@@ -9,5 +9,5 @@ public class PointEntity extends AuditableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     public Long userId;
-    private Long point;
+    public Long point;
 }

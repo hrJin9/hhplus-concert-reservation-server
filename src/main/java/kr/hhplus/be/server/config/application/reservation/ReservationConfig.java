@@ -1,9 +1,10 @@
 package kr.hhplus.be.server.config.application.reservation;
 
 import kr.hhplus.be.server.application.reservation.ReservationCommandService;
-import kr.hhplus.be.server.domain.repository.ConcertSeatLockRepository;
-import kr.hhplus.be.server.domain.repository.ConcertSeatRepository;
-import kr.hhplus.be.server.domain.repository.ReservationRepository;
+import kr.hhplus.be.server.application.reservation.ReservationFindService;
+import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
+import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;

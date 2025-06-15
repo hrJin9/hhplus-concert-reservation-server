@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    QUEUE_TOKEN_MISSING("Q001", HttpStatus.BAD_REQUEST, "대기열 토큰이 누락되었습니다."),
+    QUEUE_TOKEN_MISSING("Q001", HttpStatus.UNAUTHORIZED, "대기열 토큰이 누락되었습니다."),
     QUEUE_TOKEN_INVALID("Q003", HttpStatus.UNAUTHORIZED, "대기열 토큰이 유효하지 않습니다."),
     QUEUE_TOKEN_EXPIRED("Q004", HttpStatus.UNAUTHORIZED, "대기열 토큰이 만료되었습니다."),
     QUEUE_TOKEN_NOT_AVAILABLE("Q005", HttpStatus.UNAUTHORIZED, "대기열이 진입 가능한 상태가 아닙니다."),

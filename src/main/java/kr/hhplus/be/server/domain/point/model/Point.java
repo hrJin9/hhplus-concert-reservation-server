@@ -1,6 +1,7 @@
-package kr.hhplus.be.server.domain.model;
+package kr.hhplus.be.server.domain.point.model;
 
-import kr.hhplus.be.server.domain.exception.InsufficientPointException;
+import kr.hhplus.be.server.domain.point.exception.InsufficientPointException;
+import kr.hhplus.be.server.domain.pointHistory.model.PointHistory;
 import kr.hhplus.be.server.exception.ErrorCode;
 
 public class Point{
@@ -45,14 +46,14 @@ public class Point{
     }
 
     public PointHistory charge(Long amount) {
-        Long beforePoint = this.point;
+        Long pointBefore = this.point;
         this.point += amount;
 
-        return PointHistory.createChargeHistory(
-                userId,
-                beforePoint,
+        return PointHistory.charge(
+                this.userId,
+                pointBefore,
                 amount,
-                point
+                this.point
         );
     }
 
@@ -60,16 +61,18 @@ public class Point{
         if(this.point < amount) {
             throw new InsufficientPointException(ErrorCode.INSUFFICIENT_POINT);
         }
-
-        Long beforePoint = this.point;
+        Long pointBefore = this.point;
         this.point -= amount;
 
-        return PointHistory.createUseHistory(
-                id,
-                userId,
-                beforePoint,
+        return PointHistory.use(
+                this.userId,
+                pointBefore,
                 amount,
-                point
+                this.point
         );
+    }
+
+    public void assignId(Long id) {
+        this.id = id;
     }
 }

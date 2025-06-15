@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
-import kr.hhplus.be.server.domain.repository.ConcertSeatLockRepository;
+import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 

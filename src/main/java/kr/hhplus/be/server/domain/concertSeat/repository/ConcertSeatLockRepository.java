@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.repository;
+package kr.hhplus.be.server.domain.concertSeat.repository;
 
 public interface ConcertSeatLockRepository {
     boolean acquire(Long concertSeatId, Long userId);

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.application.point.dto;
 
-import kr.hhplus.be.server.domain.model.Point;
+import kr.hhplus.be.server.domain.point.model.Point;
 
 public record PointBalanceInfo(
         Long point

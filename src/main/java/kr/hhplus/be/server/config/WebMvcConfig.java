@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.config;
 
-import kr.hhplus.be.server.domain.util.QueueTokenValidator;
+import kr.hhplus.be.server.domain.queue_token.util.QueueTokenValidator;
 import kr.hhplus.be.server.interfaces.web.queue_token.resolver.QueueTokenArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

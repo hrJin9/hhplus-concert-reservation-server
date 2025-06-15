@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
-import kr.hhplus.be.server.domain.exception.ConcertNotFoundException;
-import kr.hhplus.be.server.domain.model.Concert;
-import kr.hhplus.be.server.domain.repository.ConcertRepository;
+import kr.hhplus.be.server.domain.concert.exception.ConcertNotFoundException;
+import kr.hhplus.be.server.domain.concert.model.Concert;
+import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.exception.ErrorCode;
 import kr.hhplus.be.server.infrastructure.persistence.ConcertEntity;
 import org.springframework.stereotype.Repository;

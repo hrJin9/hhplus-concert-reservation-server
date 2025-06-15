@@ -1,8 +1,9 @@
-package kr.hhplus.be.server.domain.exception;
+package kr.hhplus.be.server.domain.concertSeat.exception;
 
+import kr.hhplus.be.server.domain.DomainException;
 import kr.hhplus.be.server.exception.ErrorCode;
 
-public class ConcertNotFoundException extends DomainException {
+public class ConcertSeatNotFoundException extends DomainException {
     private final ErrorCode errorCode;
 
     @Override
@@ -10,7 +11,7 @@ public class ConcertNotFoundException extends DomainException {
         return this.errorCode;
     }
 
-    public ConcertNotFoundException(ErrorCode errorCode) {
+    public ConcertSeatNotFoundException(ErrorCode errorCode) {
         super(errorCode);
         this.errorCode = errorCode;
     }

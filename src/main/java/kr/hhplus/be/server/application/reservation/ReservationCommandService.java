@@ -2,11 +2,11 @@ package kr.hhplus.be.server.application.reservation;
 
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationCommand;
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationResult;
-import kr.hhplus.be.server.domain.model.ConcertSeat;
-import kr.hhplus.be.server.domain.model.Reservation;
-import kr.hhplus.be.server.domain.repository.ConcertSeatLockRepository;
-import kr.hhplus.be.server.domain.repository.ConcertSeatRepository;
-import kr.hhplus.be.server.domain.repository.ReservationRepository;
+import kr.hhplus.be.server.domain.concertSeat.model.ConcertSeat;
+import kr.hhplus.be.server.domain.reservation.model.Reservation;
+import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
+import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,8 @@ public class ReservationCommandService {
      * @return
      */
     @Transactional
-    public PlaceReservationResult place(Long userId, PlaceReservationCommand command) {
+    public PlaceReservationResult reserve(Long userId, PlaceReservationCommand command) {
+
         // 좌석 상태 확인
         ConcertSeat concertSeat = concertSeatRepository.findById(userId);
 

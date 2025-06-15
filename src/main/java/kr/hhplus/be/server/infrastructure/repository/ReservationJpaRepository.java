@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
-import kr.hhplus.be.server.domain.model.Reservation;
-import kr.hhplus.be.server.domain.repository.ReservationRepository;
+import kr.hhplus.be.server.domain.reservation.model.Reservation;
+import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import kr.hhplus.be.server.infrastructure.persistence.ReservationEntity;
 import org.springframework.stereotype.Repository;
 

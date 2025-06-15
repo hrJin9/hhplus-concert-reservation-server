@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.application.payment.dto;
 
 import kr.hhplus.be.server.common.enums.PaymentStatus;
-import kr.hhplus.be.server.domain.model.Payment;
+import kr.hhplus.be.server.domain.payment.model.Payment;
 
 public record PlacePaymentResult(
         Long paymentId,

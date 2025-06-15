@@ -21,10 +21,10 @@ public class ReservationCommandController {
     private final ReservationCommandService reservationCommandService;
 
     @PostMapping
-    public ResponseEntity<ReservationResultResponse> create(@QueueAuth ValidQueueToken queueToken,
+    public ResponseEntity<ReservationResultResponse> reserve(@QueueAuth ValidQueueToken queueToken,
                                                             @RequestBody @Valid PlaceReservationRequest request
     ) {
-        PlaceReservationResult reservationResult = reservationCommandService.place(queueToken.userId(), request.toCommand());
+        PlaceReservationResult reservationResult = reservationCommandService.reserve(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(ReservationResultResponse.from(reservationResult));
     }
 }

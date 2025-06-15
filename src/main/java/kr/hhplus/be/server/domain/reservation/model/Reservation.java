@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.model;
+package kr.hhplus.be.server.domain.reservation.model;
 
 
 public class Reservation {

@@ -9,6 +9,7 @@ public class PointHistoryEntity extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+    public Long userId;
     public Long pointBefore;
     public Long amount;
     public Long pointAfter;

@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.application.concert;
 
 import kr.hhplus.be.server.application.concert.dto.ConcertInfo;
-import kr.hhplus.be.server.domain.model.Concert;
-import kr.hhplus.be.server.domain.repository.ConcertRepository;
+import kr.hhplus.be.server.domain.concert.model.Concert;
+import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 
 import java.util.List;
 

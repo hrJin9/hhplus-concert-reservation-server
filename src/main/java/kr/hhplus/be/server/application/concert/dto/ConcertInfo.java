@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.application.concert.dto;
 
-import kr.hhplus.be.server.domain.model.Concert;
+import kr.hhplus.be.server.domain.concert.model.Concert;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.exception;
+package kr.hhplus.be.server.domain;
 
 import kr.hhplus.be.server.exception.ErrorCode;
 import org.springframework.http.HttpStatus;

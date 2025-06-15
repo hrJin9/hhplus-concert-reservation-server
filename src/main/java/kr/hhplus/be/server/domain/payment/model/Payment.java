@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.model;
+package kr.hhplus.be.server.domain.payment.model;
 
 import kr.hhplus.be.server.common.enums.PaymentMethod;
 import kr.hhplus.be.server.common.enums.PaymentStatus;

@@ -1,14 +1,12 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
 
-import kr.hhplus.be.server.domain.exception.ConcertSeatNotFoundException;
-import kr.hhplus.be.server.domain.model.ConcertSeat;
-import kr.hhplus.be.server.domain.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.domain.concertSeat.exception.ConcertSeatNotFoundException;
+import kr.hhplus.be.server.domain.concertSeat.model.ConcertSeat;
+import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
 import kr.hhplus.be.server.exception.ErrorCode;
 import kr.hhplus.be.server.infrastructure.persistence.ConcertSeatEntity;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 public class ConcertSeatJpaRepository implements ConcertSeatRepository {

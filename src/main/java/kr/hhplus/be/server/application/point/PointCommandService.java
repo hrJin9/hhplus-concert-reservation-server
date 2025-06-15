@@ -3,10 +3,10 @@ package kr.hhplus.be.server.application.point;
 import kr.hhplus.be.server.application.point.dto.ChargePointCommand;
 import kr.hhplus.be.server.application.point.dto.PointInfo;
 import kr.hhplus.be.server.application.point.dto.UsePointCommand;
-import kr.hhplus.be.server.domain.model.Point;
-import kr.hhplus.be.server.domain.model.PointHistory;
-import kr.hhplus.be.server.domain.repository.PointHistoryRepository;
-import kr.hhplus.be.server.domain.repository.PointRepository;
+import kr.hhplus.be.server.domain.point.model.Point;
+import kr.hhplus.be.server.domain.pointHistory.model.PointHistory;
+import kr.hhplus.be.server.domain.pointHistory.repository.PointHistoryRepository;
+import kr.hhplus.be.server.domain.point.repository.PointRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 public class PointCommandService {
@@ -26,7 +26,6 @@ public class PointCommandService {
     @Transactional
     public PointInfo charge(Long userId, ChargePointCommand command) {
         Point point = pointRepository.findOrCreatePoint(userId);
-
         PointHistory history = point.charge(command.amount());
 
         pointRepository.save(point);
@@ -37,12 +36,12 @@ public class PointCommandService {
 
     /**
      * 포인트를 사용한다.
+     * @param userId
      * @param command
      * @return
      */
     public PointInfo use(Long userId, UsePointCommand command) {
         Point point = pointRepository.findByUserId(userId);
-
         PointHistory history = point.use(command.amount());
 
         pointRepository.save(point);
@@ -50,5 +49,4 @@ public class PointCommandService {
 
         return PointInfo.from(history);
     }
-
 }
