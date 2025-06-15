@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.interfaces.web.queue_token.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.hhplus.be.server.domain.exception.QueueTokenExpiredException;
-import kr.hhplus.be.server.domain.model.QueueToken;
-import kr.hhplus.be.server.domain.util.QueueTokenValidator;
+import kr.hhplus.be.server.domain.queue_token.exception.QueueTokenExpiredException;
+import kr.hhplus.be.server.domain.queue_token.model.QueueToken;
+import kr.hhplus.be.server.domain.queue_token.util.QueueTokenValidator;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
 import kr.hhplus.be.server.interfaces.web.queue_token.annotation.QueueAuth;
@@ -13,6 +13,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import java.util.UUID;
 
 public class QueueTokenArgumentResolver implements HandlerMethodArgumentResolver {
     private final QueueTokenValidator queueTokenValidator;
@@ -33,19 +35,13 @@ public class QueueTokenArgumentResolver implements HandlerMethodArgumentResolver
         String tokenHeader = request.getHeader("Queue-Token");
 
         if (tokenHeader == null) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, ErrorCode.QUEUE_TOKEN_MISSING);
+            throw new ApiException(ErrorCode.QUEUE_TOKEN_MISSING);
         }
 
-        // TODO : 토큰을 좀 더 복잡한 형태로 암호화?
-        Long tokenId = Long.parseLong(tokenHeader);
+        UUID tokenId = UUID.fromString(tokenHeader);
+        QueueToken token = queueTokenValidator.validate(tokenId);
 
-        try {
-            QueueToken token = queueTokenValidator.validate(tokenId);
-
-            return new ValidQueueToken(token.getUserId(), token.getIssuedAt(), token.getExpiresAt());
-        } catch (QueueTokenExpiredException e) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, e.getErrorCode());
-        }
+        return new ValidQueueToken(token.getUserId(), token.getIssuedAt(), token.getExpiresAt());
     }
 
 }

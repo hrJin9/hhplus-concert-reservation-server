@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.config.domain.queue_token;
 
-import kr.hhplus.be.server.domain.repository.QueueTokenRepository;
-import kr.hhplus.be.server.domain.util.QueueTokenValidator;
+import kr.hhplus.be.server.domain.queue_token.repository.QueueTokenRepository;
+import kr.hhplus.be.server.domain.queue_token.util.QueueTokenValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
