@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.web.queue_token.resolver;
+package kr.hhplus.be.server.config.resolver;
 
 public record ValidQueueToken(
         Long userId,

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
-import kr.hhplus.be.server.domain.point.exception.PointNotFoundException;
+import kr.hhplus.be.server.exception.PointNotFoundException;
 import kr.hhplus.be.server.domain.point.model.Point;
 import kr.hhplus.be.server.domain.point.repository.PointRepository;
 import kr.hhplus.be.server.exception.ErrorCode;

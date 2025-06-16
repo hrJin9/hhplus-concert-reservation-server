@@ -2,8 +2,8 @@ package kr.hhplus.be.server.interfaces.web.queue_token;
 
 import kr.hhplus.be.server.application.queue_token.dto.QueueStatus;
 import kr.hhplus.be.server.application.queue_token.TokenFindService;
-import kr.hhplus.be.server.interfaces.web.queue_token.annotation.QueueAuth;
-import kr.hhplus.be.server.interfaces.web.queue_token.resolver.ValidQueueToken;
+import kr.hhplus.be.server.config.resolver.QueueAuth;
+import kr.hhplus.be.server.config.resolver.ValidQueueToken;
 import kr.hhplus.be.server.interfaces.web.queue_token.response.QueueStatusResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.config.application.concert;
+package kr.hhplus.be.server.config.injection;
 
 import kr.hhplus.be.server.application.concert.ConcertFindService;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class ConcertConfig {
+public class ConcertInjection {
     private final ConcertRepository concertRepository;
 
-    public ConcertConfig(ConcertRepository concertRepository) {
+    public ConcertInjection(ConcertRepository concertRepository) {
         this.concertRepository = concertRepository;
     }
 

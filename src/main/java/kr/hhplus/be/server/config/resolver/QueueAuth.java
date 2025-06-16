@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.web.queue_token.annotation;
+package kr.hhplus.be.server.config.resolver;
 
 import java.lang.annotation.*;
 

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.config.application.payment;
+package kr.hhplus.be.server.config.injection;
 
 import kr.hhplus.be.server.application.payment.PaymentCommandService;
 import kr.hhplus.be.server.domain.payment.repository.PaymentRepository;
@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class PaymentConfig {
+public class PaymentInjection {
     private final PaymentRepository paymentRepository;
 
-    public PaymentConfig(PaymentRepository paymentRepository) {
+    public PaymentInjection(PaymentRepository paymentRepository) {
         this.paymentRepository = paymentRepository;
     }
 

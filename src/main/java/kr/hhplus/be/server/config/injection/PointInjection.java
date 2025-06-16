@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.config.application.point;
+package kr.hhplus.be.server.config.injection;
 
 import kr.hhplus.be.server.application.point.PointCommandService;
 import kr.hhplus.be.server.application.point.PointFindService;
@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class PointConfig {
+public class PointInjection {
     private final PointRepository pointRepository;
     private final PointHistoryRepository pointHistoryRepository;
 
-    public PointConfig(PointRepository pointRepository, PointHistoryRepository pointHistoryRepository) {
+    public PointInjection(PointRepository pointRepository, PointHistoryRepository pointHistoryRepository) {
         this.pointRepository = pointRepository;
         this.pointHistoryRepository = pointHistoryRepository;
     }

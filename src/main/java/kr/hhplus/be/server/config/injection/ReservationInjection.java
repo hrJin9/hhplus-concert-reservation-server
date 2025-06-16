@@ -1,7 +1,6 @@
-package kr.hhplus.be.server.config.application.reservation;
+package kr.hhplus.be.server.config.injection;
 
 import kr.hhplus.be.server.application.reservation.ReservationCommandService;
-import kr.hhplus.be.server.application.reservation.ReservationFindService;
 import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
 import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
@@ -11,12 +10,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class ReservationConfig {
+public class ReservationInjection {
     private final ReservationRepository reservationRepository;
     private final ConcertSeatLockRepository concertSeatLockRepository;
     private final ConcertSeatRepository concertSeatRepository;
 
-    public ReservationConfig(ReservationRepository reservationRepository, ConcertSeatLockRepository concertSeatLockRepository, ConcertSeatRepository concertSeatRepository) {
+    public ReservationInjection(ReservationRepository reservationRepository, ConcertSeatLockRepository concertSeatLockRepository, ConcertSeatRepository concertSeatRepository) {
         this.reservationRepository = reservationRepository;
         this.concertSeatLockRepository = concertSeatLockRepository;
         this.concertSeatRepository = concertSeatRepository;

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.domain.queue_token.exception;
 
-import kr.hhplus.be.server.domain.DomainException;
+import kr.hhplus.be.server.exception.DomainException;
 import kr.hhplus.be.server.exception.ErrorCode;
 
 public class QueueTokenExpiredException extends DomainException {

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.domain.point.model;
 
-import kr.hhplus.be.server.domain.point.exception.InsufficientPointException;
+import kr.hhplus.be.server.exception.InsufficientPointException;
 import kr.hhplus.be.server.domain.pointHistory.model.PointHistory;
 import kr.hhplus.be.server.exception.ErrorCode;
 

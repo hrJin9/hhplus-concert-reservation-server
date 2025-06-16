@@ -1,14 +1,11 @@
-package kr.hhplus.be.server.interfaces.web.queue_token.resolver;
+package kr.hhplus.be.server.config.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.hhplus.be.server.domain.queue_token.exception.QueueTokenExpiredException;
 import kr.hhplus.be.server.domain.queue_token.model.QueueToken;
 import kr.hhplus.be.server.domain.queue_token.util.QueueTokenValidator;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
-import kr.hhplus.be.server.interfaces.web.queue_token.annotation.QueueAuth;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

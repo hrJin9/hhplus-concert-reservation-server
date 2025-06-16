@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
 
-import kr.hhplus.be.server.domain.concertSeat.exception.ConcertSeatNotFoundException;
+import kr.hhplus.be.server.exception.ConcertSeatNotFoundException;
 import kr.hhplus.be.server.domain.concertSeat.model.ConcertSeat;
 import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
 import kr.hhplus.be.server.exception.ErrorCode;

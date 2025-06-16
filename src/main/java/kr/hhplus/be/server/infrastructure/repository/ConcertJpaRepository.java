@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
-import kr.hhplus.be.server.domain.concert.exception.ConcertNotFoundException;
+import kr.hhplus.be.server.exception.ConcertNotFoundException;
 import kr.hhplus.be.server.domain.concert.model.Concert;
 import kr.hhplus.be.server.domain.concert.repository.ConcertRepository;
 import kr.hhplus.be.server.exception.ErrorCode;
