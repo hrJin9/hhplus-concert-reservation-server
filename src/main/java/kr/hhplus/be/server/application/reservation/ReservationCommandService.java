@@ -23,43 +23,46 @@ public class ReservationCommandService {
     }
 
     /**
-     * 좌석 예약 유스케이스
+     * 좌석 예약
      * @param command
      * @return
      */
     @Transactional
     public PlaceReservationResult reserve(Long userId, PlaceReservationCommand command) {
-
-        // 좌석 상태 확인
-        ConcertSeat concertSeat = concertSeatRepository.findById(userId);
-
-        if(!concertSeat.isAvailable()){
-            throw new ApiException(ErrorCode.SEAT_NOT_AVAILABLE);
-        }
-
         // redis 좌석 락 획득
         boolean lockAcquired = seatLockRepository.acquire(command.concertSeatId(), userId);
-        if(!lockAcquired) {
-            throw new ApiException(ErrorCode.SEAT_ALREADY_SELECTED);
+        try {
+            if(!lockAcquired) {
+                throw new ApiException(ErrorCode.SEAT_ALREADY_SELECTED);
+            }
+
+            // 좌석 상태 확인
+            ConcertSeat concertSeat = concertSeatRepository.findById(command.concertSeatId());
+            if(!concertSeat.isAvailable()){
+                if(concertSeat.isExpired()) { // TODO : 만료처리 (스케줄러 등)
+                    concertSeat.release();
+                    concertSeatRepository.save(concertSeat);
+                } else {
+                    throw new ApiException(ErrorCode.SEAT_NOT_AVAILABLE);
+                }
+            }
+
+            // 좌석 대기 상태 업데이트
+            concertSeat.hold();
+            concertSeatRepository.save(concertSeat);
+
+            // 예약
+            Reservation reservation = Reservation.create(userId, command.concertSeatId());
+            Reservation saved = reservationRepository.save(reservation);
+
+            // TODO : 포인트 사용 일정 시간 이내에 안했을 때 좌석 상태 EXPIRED로 변경.
+            return PlaceReservationResult.from(saved);
+
+        } finally {
+            // 좌석 락 해제
+            if(lockAcquired) {
+                seatLockRepository.release(command.concertSeatId(), userId);
+            }
         }
-
-        // 좌석 상태 업데이트
-        concertSeat.hold();
-        concertSeatRepository.update(concertSeat);
-
-        // 예약
-        Reservation reservation = Reservation.create(userId, command.concertSeatId());
-        Reservation saved = reservationRepository.save(reservation);
-
-        // 좌석 상태 업데이트
-        concertSeat.reserved();
-        concertSeatRepository.update(concertSeat);
-
-        // TODO : 포인트 사용 일정 시간 이내에 안했을 때 좌석 상태 EXPIRED로 변경.
-        // 좌석 락 해제
-        seatLockRepository.release(command.concertSeatId(), userId);
-
-        // TODO : 포인트 사용 이벤트 발행
-        return PlaceReservationResult.from(saved);
     }
 }

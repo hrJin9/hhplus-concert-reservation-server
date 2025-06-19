@@ -4,4 +4,6 @@ import kr.hhplus.be.server.domain.reservation.model.Reservation;
 
 public interface ReservationRepository {
     Reservation save(Reservation reservation);
+
+    Reservation findById(Long reservationId);
 }
