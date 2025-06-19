@@ -8,4 +8,6 @@ public interface ConcertRepository {
     List<Concert> findAll();
 
     Concert findById(Long concertId);
+
+    List<Concert> findAvailableConcerts();
 }

@@ -7,5 +7,4 @@ public interface ConcertSeatRepository {
 
     ConcertSeat save(ConcertSeat concertSeat);
 
-    void update(ConcertSeat concertSeat);
 }

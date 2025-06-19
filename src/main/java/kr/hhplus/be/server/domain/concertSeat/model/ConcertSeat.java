@@ -11,7 +11,7 @@ public class ConcertSeat {
     private SeatStatus seatStatus;
     private final Long price;
 
-    private ConcertSeat(Long id, Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
+    public ConcertSeat(Long id, Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
         this.id = id;
         this.concertId = concertId;
         this.seatId = seatId;
@@ -78,7 +78,11 @@ public class ConcertSeat {
         return this.seatStatus.equals(SeatStatus.AVAILABLE);
     }
 
-    public void reserved() {
+    public void reserve() {
         this.seatStatus = SeatStatus.RESERVED;
+    }
+
+    public boolean isExpired() {
+        return this.seatStatus.equals(SeatStatus.EXPIRED);
     }
 }

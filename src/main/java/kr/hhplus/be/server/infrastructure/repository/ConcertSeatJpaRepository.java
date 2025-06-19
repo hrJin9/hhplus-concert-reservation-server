@@ -32,15 +32,6 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
         return c;
     }
 
-    @Override
-    public void update(ConcertSeat concertSeat) {
-        ConcertSeatEntity e = jpa.findById(concertSeat.getId())
-                .orElseThrow(() -> new ConcertSeatNotFoundException(ErrorCode.SEAT_NOT_FOUND));
-
-        e.seatStatus = concertSeat.getSeatStatus();
-        e.price = concertSeat.getPrice();
-    }
-
     private ConcertSeat toDomain(ConcertSeatEntity e) {
         return ConcertSeat.reconstitute(
                 e.id,

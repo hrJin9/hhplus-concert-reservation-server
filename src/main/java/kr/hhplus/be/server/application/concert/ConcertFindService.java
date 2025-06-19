@@ -20,6 +20,14 @@ public class ConcertFindService {
                 .toList();
     }
 
+    public List<ConcertInfo> findAvailableConcerts() {
+        List<Concert> concerts = concertRepository.findAvailableConcerts();
+        return concerts.stream()
+                .map(ConcertInfo::from)
+                .toList();
+    }
+
+
     public ConcertInfo findConcertById(Long concertId) {
         Concert concert = concertRepository.findById(concertId);
         return ConcertInfo.from(concert);

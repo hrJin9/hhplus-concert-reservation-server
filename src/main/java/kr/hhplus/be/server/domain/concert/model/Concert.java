@@ -12,7 +12,7 @@ public class Concert {
 
     private LocalDateTime date;
 
-    private Concert(Long id, String name, String artist, LocalDateTime date) {
+    public Concert(Long id, String name, String artist, LocalDateTime date) {
         this.id = id;
         this.name = name;
         this.artist = artist;

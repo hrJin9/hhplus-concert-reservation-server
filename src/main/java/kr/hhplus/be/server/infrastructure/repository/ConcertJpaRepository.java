@@ -7,6 +7,7 @@ import kr.hhplus.be.server.exception.ErrorCode;
 import kr.hhplus.be.server.infrastructure.persistence.ConcertEntity;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -30,6 +31,15 @@ public class ConcertJpaRepository implements ConcertRepository {
         return jpa.findById(concertId)
                 .map(this::toDomain)
                 .orElseThrow(() -> new ConcertNotFoundException(ErrorCode.CONCERT_NOT_FOUND));
+    }
+
+    @Override
+    public List<Concert> findAvailableConcerts() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return jpa.findAvailableConcerts(currentTime)
+                .stream()
+                .map(this::toDomain)
+                .toList();
     }
 
     private Concert toDomain(ConcertEntity e) {
