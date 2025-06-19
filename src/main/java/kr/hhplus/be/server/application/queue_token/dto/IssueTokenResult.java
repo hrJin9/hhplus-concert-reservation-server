@@ -1,20 +1,22 @@
 package kr.hhplus.be.server.application.queue_token.dto;
 
-import kr.hhplus.be.server.common.enums.TokenType;
+import kr.hhplus.be.server.common.enums.QueueStatus;
 import kr.hhplus.be.server.domain.queue_token.model.QueueToken;
+
+import java.time.LocalDateTime;
 
 public record IssueTokenResult(
         Long userId,
-        Long issuedAt,
-        Long expiresAt,
-        TokenType tokenType
+        QueueStatus queueStatus,
+        LocalDateTime issuedAt,
+        LocalDateTime expiresAt
 ) {
     public static IssueTokenResult from(QueueToken token) {
         return new IssueTokenResult(
                 token.getUserId(),
+                token.getQueueStatus(),
                 token.getIssuedAt(),
-                token.getExpiresAt(),
-                token.getTokenType()
+                token.getExpiresAt()
         );
     }
 }

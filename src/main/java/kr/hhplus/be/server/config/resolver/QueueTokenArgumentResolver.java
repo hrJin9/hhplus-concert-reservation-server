@@ -29,16 +29,21 @@ public class QueueTokenArgumentResolver implements HandlerMethodArgumentResolver
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String tokenHeader = request.getHeader("Queue-Token");
+        String tokenId = request.getHeader("Queue-Token");
 
-        if (tokenHeader == null) {
+        if (tokenId == null) {
             throw new ApiException(ErrorCode.QUEUE_TOKEN_MISSING);
         }
 
-        UUID tokenId = UUID.fromString(tokenHeader);
         QueueToken token = queueTokenValidator.validate(tokenId);
 
-        return new ValidQueueToken(token.getUserId(), token.getIssuedAt(), token.getExpiresAt());
+        return new ValidQueueToken(
+                token.getId(),
+                token.getUserId(),
+                token.getQueueStatus(),
+                token.getIssuedAt(),
+                token.getExpiresAt()
+        );
     }
 
 }

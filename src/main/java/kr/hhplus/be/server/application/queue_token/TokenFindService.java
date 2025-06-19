@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.application.queue_token;
 
-import kr.hhplus.be.server.application.queue_token.dto.QueueStatus;
+import kr.hhplus.be.server.application.queue_token.dto.QueueStatusResult;
+import kr.hhplus.be.server.domain.queue_token.model.QueueToken;
 import kr.hhplus.be.server.domain.queue_token.repository.QueueTokenRepository;
 
 public class TokenFindService {
@@ -11,8 +12,11 @@ public class TokenFindService {
     }
 
 
-    public QueueStatus findQueueStatus(Long userId) {
-        // TODO: 대기열 조회 기능 추가
-        return  null;
+    public QueueStatusResult findQueueStatus(Long userId) {
+        QueueToken queueToken = queueTokenRepository.findByUserId(userId);
+
+        int position = queueTokenRepository.getQueuePosition(queueToken.getId());
+        return QueueStatusResult.of(userId, position);
+
     }
 }

@@ -2,7 +2,10 @@ package kr.hhplus.be.server.domain.queue_token.util;
 
 import kr.hhplus.be.server.domain.queue_token.model.QueueToken;
 import kr.hhplus.be.server.domain.queue_token.repository.QueueTokenRepository;
+import kr.hhplus.be.server.exception.ApiException;
+import kr.hhplus.be.server.exception.ErrorCode;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class QueueTokenValidator {
@@ -12,7 +15,13 @@ public class QueueTokenValidator {
         this.queueTokenRepository = queueTokenRepository;
     }
 
-    public QueueToken validate(UUID tokenId) {
-        return queueTokenRepository.findByTokenId(tokenId);
+    public QueueToken validate(String tokenId) {
+        QueueToken token = queueTokenRepository.findByTokenId(tokenId);
+
+        if (token.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new ApiException(ErrorCode.QUEUE_TOKEN_EXPIRED);
+        }
+
+        return token;
     }
 }

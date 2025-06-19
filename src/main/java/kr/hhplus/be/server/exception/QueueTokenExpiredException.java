@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.domain.queue_token.exception;
+package kr.hhplus.be.server.exception;
 
 import kr.hhplus.be.server.exception.DomainException;
 import kr.hhplus.be.server.exception.ErrorCode;

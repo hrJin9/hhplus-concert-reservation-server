@@ -6,10 +6,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface QueueTokenRepository {
-    QueueToken findByTokenId(UUID tokenId);
+    QueueToken findByTokenId(String tokenId);
 
-    Optional<QueueToken> findByUserId(Long userId);
+    QueueToken findByUserId(Long userId);
 
-    QueueToken save(QueueToken token);
+    void addActiveUser(QueueToken token);
+
+    void activateWaitingUser();
+
+    void addWaitingUserToQueue(QueueToken token);
+
+    boolean findQueueStatus();
+
+    int getQueuePosition(String tokenId);
+
+    void cleanQueue();
+
+    void cleanExpiredToken();
 
 }
