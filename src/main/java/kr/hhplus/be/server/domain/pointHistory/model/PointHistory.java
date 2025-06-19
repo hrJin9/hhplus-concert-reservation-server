@@ -1,14 +1,8 @@
 package kr.hhplus.be.server.domain.pointHistory.model;
 
-import jakarta.persistence.*;
 import kr.hhplus.be.server.common.enums.TransactionType;
-import kr.hhplus.be.server.infrastructure.persistence.AuditableEntity;
 
-@Entity
-@Table(name = "point_history")
-public class PointHistory extends AuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PointHistory {
     private Long id;
 
     private final Long userId;
@@ -19,10 +13,9 @@ public class PointHistory extends AuditableEntity {
 
     private final Long pointAfter;
 
-    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    protected PointHistory(Long id, Long userId, Long pointBefore, Long amount, Long pointAfter, TransactionType transactionType) {
+    public PointHistory(Long id, Long userId, Long pointBefore, Long amount, Long pointAfter, TransactionType transactionType) {
         this.id = id;
         this.userId = userId;
         this.pointBefore = pointBefore;

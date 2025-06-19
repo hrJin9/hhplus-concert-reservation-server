@@ -11,7 +11,7 @@ public class Point{
 
     private Long point;
 
-    protected Point(Long id, Long userId, Long point) {
+    public Point(Long id, Long userId, Long point) {
         this.id = id;
         this.userId = userId;
         this.point = point;
@@ -22,6 +22,14 @@ public class Point{
                 null,
                 userId,
                 0L
+        );
+    }
+
+    public static Point of(Long id, Long userId, Long point) {
+        return new Point(
+                id,
+                userId,
+                point
         );
     }
 
@@ -58,9 +66,6 @@ public class Point{
     }
 
     public PointHistory use(Long amount) {
-        if(this.point < amount) {
-            throw new InsufficientPointException(ErrorCode.INSUFFICIENT_POINT);
-        }
         Long pointBefore = this.point;
         this.point -= amount;
 
@@ -74,5 +79,9 @@ public class Point{
 
     public void assignId(Long id) {
         this.id = id;
+    }
+
+    public boolean hasEnoughBalance(Long amount) {
+        return this.point >= amount;
     }
 }

@@ -14,10 +14,12 @@ public class PointHistoryJpaRepository implements PointHistoryRepository {
     }
 
     @Override
-    public void save(PointHistory d) {
+    public PointHistory save(PointHistory d) {
         PointHistoryEntity e = toEntity(d);
         PointHistoryEntity saved = jpa.save(e);
         d.assignId(saved.id);
+
+        return d;
     }
 
     private PointHistoryEntity toEntity(PointHistory d) {

@@ -22,10 +22,12 @@ public class PointJpaRepository implements PointRepository {
     }
 
     @Override
-    public void save(Point d) {
+    public Point save(Point d) {
         PointEntity e = toEntity(d);
         PointEntity saved = jpa.save(e);
         d.assignId(saved.id);
+
+        return d;
     }
 
     @Override
