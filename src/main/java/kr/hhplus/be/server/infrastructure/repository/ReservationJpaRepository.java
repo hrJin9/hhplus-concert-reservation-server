@@ -1,11 +1,15 @@
 package kr.hhplus.be.server.infrastructure.repository;
 
+import kr.hhplus.be.server.common.enums.ReservationStatus;
 import kr.hhplus.be.server.domain.reservation.model.Reservation;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import kr.hhplus.be.server.exception.ErrorCode;
 import kr.hhplus.be.server.exception.ReservationNotFoundException;
 import kr.hhplus.be.server.infrastructure.persistence.ReservationEntity;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class ReservationJpaRepository implements ReservationRepository {
@@ -29,6 +33,22 @@ public class ReservationJpaRepository implements ReservationRepository {
 
         r.assignId(saved.id);
         return r;
+    }
+
+    @Override
+    public List<Reservation> findAllByStatusAndReservedAtBefore(ReservationStatus reservationStatus, LocalDateTime timeoutThreshold) {
+        List<ReservationEntity> entities = jpa.findAllByStatusAndReservedAtBefore(
+                reservationStatus,
+                timeoutThreshold
+        );
+
+        return entities.stream().map(this::toDomain).toList();
+    }
+
+    @Override
+    public void saveAll(List<Reservation> expiredReservations) {
+        List<ReservationEntity> entities = expiredReservations.stream().map(this::toEntity).toList();
+        jpa.saveAll(entities);
     }
 
     private Reservation toDomain(ReservationEntity e) {

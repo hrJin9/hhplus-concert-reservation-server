@@ -8,6 +8,7 @@ public class Reservation {
     private final Long userId;
     private final Long concertSeatId;
     private  ReservationStatus status;
+    private static final Integer timeOutMin = 5;
 
     public Reservation(Long id, Long userId, Long concertSeatId, ReservationStatus status) {
         this.id = id;
@@ -52,6 +53,12 @@ public class Reservation {
 
     public void hold() {
         this.status = ReservationStatus.HOLD;
+    }
+
+    public void cancel() {
+        if (this.status == ReservationStatus.HOLD) {
+            this.status = ReservationStatus.CANCELD;
+        }
     }
 
     public void complete() {

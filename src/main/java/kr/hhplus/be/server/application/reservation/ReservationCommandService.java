@@ -2,6 +2,7 @@ package kr.hhplus.be.server.application.reservation;
 
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationCommand;
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationResult;
+import kr.hhplus.be.server.common.enums.ReservationStatus;
 import kr.hhplus.be.server.domain.concertSeat.model.ConcertSeat;
 import kr.hhplus.be.server.domain.reservation.model.Reservation;
 import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
@@ -9,7 +10,11 @@ import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReservationCommandService {
     private final ReservationRepository reservationRepository;
@@ -64,5 +69,20 @@ public class ReservationCommandService {
                 seatLockRepository.release(command.concertSeatId(), userId);
             }
         }
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void cancelExpiredReservations() {
+        LocalDateTime timeoutThreshold = LocalDateTime.now().minusMinutes(5);
+        List<Reservation> expiredReservations = reservationRepository
+                .findAllByStatusAndReservedAtBefore(ReservationStatus.HOLD, timeoutThreshold);
+
+
+        for (Reservation reservation : expiredReservations) {
+            reservation.cancel();
+        }
+
+        // 3. 일괄 저장
+        reservationRepository.saveAll(expiredReservations);
     }
 }
