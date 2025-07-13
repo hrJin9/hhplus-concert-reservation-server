@@ -1,28 +1,37 @@
 package kr.hhplus.be.server.config.injection;
 
 import kr.hhplus.be.server.application.reservation.ReservationCommandService;
-import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
-import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.application.seat.SeatCommandService;
+import kr.hhplus.be.server.domain.seat.repository.SeatLockRepository;
+import kr.hhplus.be.server.domain.seat.repository.SeatRepository;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
 @Configuration
 @EnableTransactionManagement
 public class ReservationInjection {
+    private final SeatLockRepository seatLockRepository;
+    private final SeatCommandService seatCommandService;
+    private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
-    private final ConcertSeatLockRepository concertSeatLockRepository;
-    private final ConcertSeatRepository concertSeatRepository;
 
-    public ReservationInjection(ReservationRepository reservationRepository, ConcertSeatLockRepository concertSeatLockRepository, ConcertSeatRepository concertSeatRepository) {
+    public ReservationInjection(SeatLockRepository seatLockRepository, SeatCommandService seatCommandService, SeatRepository seatRepository, ReservationRepository reservationRepository) {
+        this.seatLockRepository = seatLockRepository;
+        this.seatCommandService = seatCommandService;
+        this.seatRepository = seatRepository;
         this.reservationRepository = reservationRepository;
-        this.concertSeatLockRepository = concertSeatLockRepository;
-        this.concertSeatRepository = concertSeatRepository;
     }
 
     @Bean
     public ReservationCommandService reservationCommandService() {
-        return new ReservationCommandService(reservationRepository, concertSeatLockRepository, concertSeatRepository);
+        return new ReservationCommandService(
+                seatLockRepository,
+                seatCommandService,
+                seatRepository,
+                reservationRepository
+        );
     }
 }

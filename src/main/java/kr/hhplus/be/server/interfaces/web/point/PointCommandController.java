@@ -2,7 +2,7 @@ package kr.hhplus.be.server.interfaces.web.point;
 
 import jakarta.validation.Valid;
 import kr.hhplus.be.server.application.point.PointCommandService;
-import kr.hhplus.be.server.application.point.dto.PointInfo;
+import kr.hhplus.be.server.application.point.dto.PointResult;
 import kr.hhplus.be.server.interfaces.web.point.response.PointInfoResponse;
 import kr.hhplus.be.server.config.resolver.QueueAuth;
 import kr.hhplus.be.server.config.resolver.ValidQueueToken;
@@ -31,21 +31,7 @@ public class PointCommandController {
     public ResponseEntity<PointInfoResponse> charge(@QueueAuth ValidQueueToken queueToken,
                                                     @RequestBody @Valid ChargePointRequest request
     ) {
-        PointInfo result = pointCommandService.charge(queueToken.userId(), request.toCommand());
-        return ResponseEntity.ok(PointInfoResponse.from(result));
-    }
-
-    /**
-     * 포인트를 사용한다.
-     * @param queueToken
-     * @param request
-     * @return
-     */
-    @PostMapping("/use")
-    public ResponseEntity<PointInfoResponse> use(@QueueAuth ValidQueueToken queueToken,
-                                                 @RequestBody @Valid UsePointRequest request
-    ) {
-        PointInfo result = pointCommandService.use(queueToken.userId(), request.toCommand());
+        PointResult result = pointCommandService.charge(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(PointInfoResponse.from(result));
     }
 }

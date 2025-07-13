@@ -2,87 +2,85 @@ package kr.hhplus.be.server.application.reservation;
 
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationCommand;
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationResult;
+import kr.hhplus.be.server.application.seat.SeatCommandService;
 import kr.hhplus.be.server.common.enums.ReservationStatus;
-import kr.hhplus.be.server.domain.concertSeat.model.ConcertSeat;
+import kr.hhplus.be.server.domain.seat.model.Seat;
 import kr.hhplus.be.server.domain.reservation.model.Reservation;
-import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatLockRepository;
-import kr.hhplus.be.server.domain.concertSeat.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.domain.seat.repository.SeatLockRepository;
+import kr.hhplus.be.server.domain.seat.repository.SeatRepository;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 public class ReservationCommandService {
+    private final SeatLockRepository seatLockRepository;
+    private final SeatCommandService seatCommandService;
+    private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
-    private final ConcertSeatLockRepository seatLockRepository;
-    private final ConcertSeatRepository concertSeatRepository;
 
-    public ReservationCommandService(ReservationRepository reservationRepository, ConcertSeatLockRepository seatLockRepository, ConcertSeatRepository concertSeatRepository) {
-        this.reservationRepository = reservationRepository;
+    public ReservationCommandService(SeatLockRepository seatLockRepository, SeatCommandService seatCommandService, SeatRepository seatRepository, ReservationRepository reservationRepository) {
         this.seatLockRepository = seatLockRepository;
-        this.concertSeatRepository = concertSeatRepository;
+        this.seatCommandService = seatCommandService;
+        this.seatRepository = seatRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     /**
-     * 좌석 예약
+     * 해당 좌석에 대한 Redis락을 획득한다.
      * @param command
+     * @return
+     */
+    public PlaceReservationResult placeWithLock(Long userId, PlaceReservationCommand command) {
+        // redis 좌석 락 획득
+        boolean lockAcquired = seatLockRepository.acquire(command.seatId(), userId);
+        if(!lockAcquired) {
+            throw new ApiException(ErrorCode.SEAT_ALREADY_SELECTED);
+        }
+        try {
+            return reserve(userId, command);
+        } finally {
+            seatLockRepository.release(command.seatId(), userId);
+        }
+    }
+
+    /**
+     * 좌석을 예약 대기 처리한 뒤 예약 내역을 저장한다.
      * @return
      */
     @Transactional
     public PlaceReservationResult reserve(Long userId, PlaceReservationCommand command) {
-        // redis 좌석 락 획득
-        boolean lockAcquired = seatLockRepository.acquire(command.concertSeatId(), userId);
-        try {
-            if(!lockAcquired) {
-                throw new ApiException(ErrorCode.SEAT_ALREADY_SELECTED);
-            }
+        // 좌석 예약 대기 처리
+        seatCommandService.reserveSeat(userId, command.seatId());
 
-            // 좌석 상태 확인
-            ConcertSeat concertSeat = concertSeatRepository.findById(command.concertSeatId());
-            if(!concertSeat.isAvailable()){
-                if(concertSeat.isExpired()) { // TODO : 만료처리 (스케줄러 등)
-                    concertSeat.release();
-                    concertSeatRepository.save(concertSeat);
-                } else {
-                    throw new ApiException(ErrorCode.SEAT_NOT_AVAILABLE);
-                }
-            }
+        // 예약 내역 저장
+        Reservation reservation = Reservation.create(userId, command.seatId());
+        Reservation saved = reservationRepository.save(reservation);
 
-            // 좌석 대기 상태 업데이트
-            concertSeat.hold();
-            concertSeatRepository.save(concertSeat);
-
-            // 예약
-            Reservation reservation = Reservation.create(userId, command.concertSeatId());
-            Reservation saved = reservationRepository.save(reservation);
-
-            // TODO : 포인트 사용 일정 시간 이내에 안했을 때 좌석 상태 EXPIRED로 변경.
-            return PlaceReservationResult.from(saved);
-
-        } finally {
-            // 좌석 락 해제
-            if(lockAcquired) {
-                seatLockRepository.release(command.concertSeatId(), userId);
-            }
-        }
+        return PlaceReservationResult.from(saved);
     }
 
+    /**
+     * 일정 시간마다 결제 시간이 만료된 결제 대기중인 예약을 취소처리한다.
+     */
     @Scheduled(fixedDelay = 5000)
     public void cancelExpiredReservations() {
         LocalDateTime timeoutThreshold = LocalDateTime.now().minusMinutes(5);
         List<Reservation> expiredReservations = reservationRepository
                 .findAllByStatusAndReservedAtBefore(ReservationStatus.HOLD, timeoutThreshold);
 
-
         for (Reservation reservation : expiredReservations) {
-            reservation.cancel();
+            reservation.expire();
+            Seat canceldSeat = seatRepository.findById(reservation.getSeatId());
+            canceldSeat.expire();
         }
 
-        // 3. 일괄 저장
         reservationRepository.saveAll(expiredReservations);
     }
 }

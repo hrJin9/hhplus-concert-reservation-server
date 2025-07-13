@@ -64,7 +64,7 @@ public class ReservationJpaRepository implements ReservationRepository {
         ReservationEntity e = new ReservationEntity();
         e.id = r.getId();
         e.userId = r.getUserId();
-        e.concertSeatId = r.getConcertSeatId();
+        e.concertSeatId = r.getSeatId();
         e.status = r.getStatus();
         return e;
     }

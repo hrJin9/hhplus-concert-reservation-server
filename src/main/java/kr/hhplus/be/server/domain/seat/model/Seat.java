@@ -1,22 +1,24 @@
-package kr.hhplus.be.server.domain.concertSeat.model;
+package kr.hhplus.be.server.domain.seat.model;
 
 import kr.hhplus.be.server.common.enums.SeatStatus;
 import kr.hhplus.be.server.exception.NotAvailableSeatException;
 import kr.hhplus.be.server.exception.ErrorCode;
 
-public class ConcertSeat {
+public class Seat {
     private Long id;
     private final Long concertId;
     private final Long seatId;
-    private SeatStatus seatStatus;
     private final Long price;
+    private SeatStatus seatStatus;
+    private Long assignedUserId;
 
-    public ConcertSeat(Long id, Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
+    public Seat(Long id, Long concertId, Long seatId, Long price, SeatStatus seatStatus, Long assignedUserId) {
         this.id = id;
         this.concertId = concertId;
         this.seatId = seatId;
-        this.seatStatus = seatStatus;
         this.price = price;
+        this.seatStatus = seatStatus;
+        this.assignedUserId = assignedUserId;
     }
 
     public Long getId() {
@@ -31,40 +33,46 @@ public class ConcertSeat {
         return seatId;
     }
 
+    public Long getPrice() {
+        return price;
+    }
+
     public SeatStatus getSeatStatus() {
         return seatStatus;
     }
 
-    public Long getPrice() {
-        return price;
+    public Long getAssignedUserId() {
+        return assignedUserId;
     }
 
     public void assignId(Long id) {
         this.id = id;
     }
 
-    public static ConcertSeat create(Long concertId, Long seatId, Long price) {
-        return new ConcertSeat(
+    public static Seat create(Long concertId, Long seatId, Long price, Long userId) {
+        return new Seat(
                 null,
                 concertId,
                 seatId,
+                price,
                 SeatStatus.AVAILABLE,
-                price
+                userId
         );
     }
 
-    public static ConcertSeat reconstitute(Long id, Long concertId, Long seatId, SeatStatus seatStatus, Long price) {
-        return new ConcertSeat(
+    public static Seat reconstitute(Long id, Long concertId, Long seatId, Long price, SeatStatus seatStatus, Long assignedUserId) {
+        return new Seat(
                 id,
                 concertId,
                 seatId,
+                price,
                 seatStatus,
-                price
+                assignedUserId
         );
     }
 
     public void hold() {
-        if(this.seatStatus != SeatStatus.AVAILABLE) {
+        if(!this.seatStatus.equals(SeatStatus.AVAILABLE)) {
             throw new NotAvailableSeatException(ErrorCode.SEAT_NOT_AVAILABLE);
         }
         this.seatStatus = SeatStatus.HOLD;
@@ -82,7 +90,12 @@ public class ConcertSeat {
         this.seatStatus = SeatStatus.RESERVED;
     }
 
-    public boolean isExpired() {
-        return this.seatStatus.equals(SeatStatus.EXPIRED);
+    public void assignAndHold(Long userId) {
+        this.hold();
+        this.assignedUserId = userId;
+    }
+
+    public void expire() {
+        this.seatStatus = SeatStatus.EXPIRED;
     }
 }

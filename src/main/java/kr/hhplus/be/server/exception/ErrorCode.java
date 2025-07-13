@@ -21,12 +21,14 @@ public enum ErrorCode {
 
     RESERVATION_NOT_FOUND("R001", HttpStatus.NOT_FOUND, "예약 정보를 찾을 수 없습니다."),
     RESERVATION_INVALID("R002", HttpStatus.UNAUTHORIZED, "이미 완료된 예약입니다."),
-    RESERVATION_EXPIRED("R003", HttpStatus.UNAUTHORIZED, "만료된 예약 정보입니다."),
-    RESERVATION_USER_NOT_MATCH("R004", HttpStatus.BAD_REQUEST, "예약자 정보가 일치하지 않습니다"),
+    RESERVATION_CANCELD("R003", HttpStatus.UNAUTHORIZED, "취소된 예약 정보입니다."),
+    RESERVATION_IN_PROCESS("R004", HttpStatus.NOT_ACCEPTABLE, "결제 진행중인 예약 정보입니다."),
+    RESERVATION_USER_NOT_MATCH("R005", HttpStatus.BAD_REQUEST, "예약자 정보가 일치하지 않습니다"),
 
     SEAT_NOT_FOUND("S001", HttpStatus.NOT_FOUND, "좌석을 찾을 수 없습니다."),
     SEAT_NOT_AVAILABLE("S002", HttpStatus.BAD_REQUEST, "해당 좌석은 예약할 수 없습니다."),
     SEAT_ALREADY_SELECTED("S003", HttpStatus.BAD_REQUEST, "이미 선택된 좌석입니다."),
+    SEAT_USER_NOT_MATCH("S004", HttpStatus.BAD_REQUEST, "좌석의 예약자 정보가 다릅니다."),
 
     CONCERT_NOT_FOUND("C001", HttpStatus.NOT_FOUND, "콘서트 정보가 존재하지 않습니다.");
 

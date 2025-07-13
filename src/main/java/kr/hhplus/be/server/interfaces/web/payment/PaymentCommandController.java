@@ -24,7 +24,7 @@ public class PaymentCommandController {
     public ResponseEntity<PlacePaymentResultResponse> place(@QueueAuth ValidQueueToken queueToken,
                                                             @RequestBody @Valid PlacePaymentRequest request
     ) {
-        PlacePaymentResult paymentResult = paymentUseCase.place(queueToken.userId(), request.toCommand());
+        PlacePaymentResult paymentResult = paymentUseCase.placeWithLock(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(PlacePaymentResultResponse.from(paymentResult));
     }
 }

@@ -24,7 +24,7 @@ public class ReservationCommandController {
     public ResponseEntity<ReservationResultResponse> reserve(@QueueAuth ValidQueueToken queueToken,
                                                             @RequestBody @Valid PlaceReservationRequest request
     ) {
-        PlaceReservationResult reservationResult = reservationCommandService.reserve(queueToken.userId(), request.toCommand());
+        PlaceReservationResult reservationResult = reservationCommandService.placeWithLock(queueToken.userId(), request.toCommand());
         return ResponseEntity.ok(ReservationResultResponse.from(reservationResult));
     }
 }

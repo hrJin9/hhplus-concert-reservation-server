@@ -18,6 +18,7 @@ public class PointJpaRepository implements PointRepository {
     @Override
     public Point findByUserId(Long userId) {
         return jpa.findByUserId(userId)
+                .map(this::toDomain)
                 .orElseThrow(() -> new PointNotFoundException(ErrorCode.POINT_NOT_FOUND));
     }
 
@@ -32,8 +33,21 @@ public class PointJpaRepository implements PointRepository {
 
     @Override
     public Point findOrCreatePoint(Long userId) {
-        return jpa.findByUserId(userId)
-                .orElse(Point.create(userId));
+        PointEntity e = jpa.findByUserId(userId)
+                .orElseGet(() -> {
+                    Point d = Point.create(userId);
+                    return jpa.save(toEntity(d));
+                });
+
+        return toDomain(e);
+    }
+
+    private Point toDomain(PointEntity e) {
+        return new Point(
+                e.id,
+                e.userId,
+                e.point
+        );
     }
 
     private PointEntity toEntity(Point d) {
