@@ -5,6 +5,8 @@ import kr.hhplus.be.server.application.payment.dto.PlacePaymentCommand;
 import kr.hhplus.be.server.common.enums.PaymentMethod;
 
 public record PlacePaymentRequest(
+        @NotNull(message = "예약 내역은 필수 입력값입니다.")
+        Long reservationId,
         @NotNull(message = "결제금액은 필수 값입니다.")
         Long amount,
         @NotNull(message = "결제수단은 필수 값입니다.")
@@ -12,6 +14,7 @@ public record PlacePaymentRequest(
 ) {
         public PlacePaymentCommand toCommand() {
                 return new PlacePaymentCommand(
+                        reservationId,
                         amount,
                         paymentMethod
                 );
