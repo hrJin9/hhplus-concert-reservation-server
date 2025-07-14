@@ -36,9 +36,10 @@ public class ReservationJpaRepository implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findAllByStatusAndReservedAtBefore(ReservationStatus reservationStatus, LocalDateTime timeoutThreshold) {
+    public List<Reservation> findAllExpired() {
+        LocalDateTime timeoutThreshold = LocalDateTime.now().minusMinutes(5);
         List<ReservationEntity> entities = jpa.findAllByStatusAndReservedAtBefore(
-                reservationStatus,
+                ReservationStatus.HOLD,
                 timeoutThreshold
         );
 

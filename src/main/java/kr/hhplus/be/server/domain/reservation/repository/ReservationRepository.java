@@ -11,7 +11,7 @@ public interface ReservationRepository {
 
     Reservation findById(Long reservationId);
 
-    List<Reservation> findAllByStatusAndReservedAtBefore(ReservationStatus reservationStatus, LocalDateTime timeoutThreshold);
+    List<Reservation> findAllExpired();
 
     void saveAll(List<Reservation> expiredReservations);
 }

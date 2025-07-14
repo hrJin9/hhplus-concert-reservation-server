@@ -51,7 +51,6 @@ public class SeatJpaRepository implements SeatRepository {
         return Seat.reconstitute(
                 e.id,
                 e.concertId,
-                e.seatId,
                 e.price,
                 e.seatStatus,
                 e.assignedUserId
@@ -62,7 +61,6 @@ public class SeatJpaRepository implements SeatRepository {
         SeatEntity e = new SeatEntity();
         e.id = c.getId();
         e.concertId = c.getConcertId();
-        e.seatId = c.getSeatId();
         e.price = c.getPrice();
         e.seatStatus = c.getSeatStatus();
         e.assignedUserId = c.getAssignedUserId();

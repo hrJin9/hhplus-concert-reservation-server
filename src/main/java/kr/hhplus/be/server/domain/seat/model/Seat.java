@@ -7,15 +7,13 @@ import kr.hhplus.be.server.exception.ErrorCode;
 public class Seat {
     private Long id;
     private final Long concertId;
-    private final Long seatId;
     private final Long price;
     private SeatStatus seatStatus;
     private Long assignedUserId;
 
-    public Seat(Long id, Long concertId, Long seatId, Long price, SeatStatus seatStatus, Long assignedUserId) {
+    public Seat(Long id, Long concertId, Long price, SeatStatus seatStatus, Long assignedUserId) {
         this.id = id;
         this.concertId = concertId;
-        this.seatId = seatId;
         this.price = price;
         this.seatStatus = seatStatus;
         this.assignedUserId = assignedUserId;
@@ -27,10 +25,6 @@ public class Seat {
 
     public Long getConcertId() {
         return concertId;
-    }
-
-    public Long getSeatId() {
-        return seatId;
     }
 
     public Long getPrice() {
@@ -49,22 +43,20 @@ public class Seat {
         this.id = id;
     }
 
-    public static Seat create(Long concertId, Long seatId, Long price, Long userId) {
+    public static Seat create(Long concertId, Long price, Long userId) {
         return new Seat(
                 null,
                 concertId,
-                seatId,
                 price,
                 SeatStatus.AVAILABLE,
                 userId
         );
     }
 
-    public static Seat reconstitute(Long id, Long concertId, Long seatId, Long price, SeatStatus seatStatus, Long assignedUserId) {
+    public static Seat reconstitute(Long id, Long concertId, Long price, SeatStatus seatStatus, Long assignedUserId) {
         return new Seat(
                 id,
                 concertId,
-                seatId,
                 price,
                 seatStatus,
                 assignedUserId

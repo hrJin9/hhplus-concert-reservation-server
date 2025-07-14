@@ -71,14 +71,11 @@ public class ReservationCommandService {
      */
     @Scheduled(fixedDelay = 5000)
     public void cancelExpiredReservations() {
-        LocalDateTime timeoutThreshold = LocalDateTime.now().minusMinutes(5);
-        List<Reservation> expiredReservations = reservationRepository
-                .findAllByStatusAndReservedAtBefore(ReservationStatus.HOLD, timeoutThreshold);
+        List<Reservation> expiredReservations = reservationRepository.findAllExpired();
 
         for (Reservation reservation : expiredReservations) {
             reservation.expire();
-            Seat canceldSeat = seatRepository.findById(reservation.getSeatId());
-            canceldSeat.expire();
+            seatCommandService.expireSeat(reservation.getSeatId());
         }
 
         reservationRepository.saveAll(expiredReservations);

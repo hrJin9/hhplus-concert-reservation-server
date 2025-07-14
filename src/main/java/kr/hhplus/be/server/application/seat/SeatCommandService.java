@@ -69,4 +69,10 @@ public class SeatCommandService {
 
         seatRepository.saveAll(expiredSeats);
     }
+
+    public void expireSeat(Long seatId) {
+        Seat canceldSeat = seatRepository.findById(seatId);
+        canceldSeat.expire();
+        seatRepository.save(canceldSeat);
+    }
 }

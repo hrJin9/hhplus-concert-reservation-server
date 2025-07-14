@@ -35,20 +35,20 @@ public class Reservation {
         return status;
     }
 
-    public static Reservation create(Long userId, Long concertSeatId) {
+    public static Reservation create(Long userId, Long seatId) {
         return new Reservation(
                 null,
                 userId,
-                concertSeatId,
+                seatId,
                 ReservationStatus.AVAILABLE
         );
     }
 
-    public static Reservation reconstitute(Long id, Long userId, Long concertSeatId, ReservationStatus status) {
+    public static Reservation reconstitute(Long id, Long userId, Long seatId, ReservationStatus status) {
         return new Reservation(
                 id,
                 userId,
-                concertSeatId,
+                seatId,
                 status
         );
     }
