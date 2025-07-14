@@ -13,6 +13,10 @@ public class ConcertFindService {
         this.concertRepository = concertRepository;
     }
 
+    /**
+     * 모든 콘서트 목록을 조회한다.
+     * @return
+     */
     public List<ConcertInfo> findAllConcerts() {
         List<Concert> concerts = concertRepository.findAll();
         return concerts.stream()
@@ -20,6 +24,10 @@ public class ConcertFindService {
                 .toList();
     }
 
+    /**
+     * 예약 가능한 콘서트 목록을 조회한다.
+     * @return
+     */
     public List<ConcertInfo> findAvailableConcerts() {
         List<Concert> concerts = concertRepository.findAvailableConcerts();
         return concerts.stream()
@@ -27,7 +35,11 @@ public class ConcertFindService {
                 .toList();
     }
 
-
+    /**
+     * 콘서트 상세를 조회한다.
+     * @param concertId
+     * @return
+     */
     public ConcertInfo findConcertById(Long concertId) {
         Concert concert = concertRepository.findById(concertId);
         return ConcertInfo.from(concert);
