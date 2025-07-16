@@ -2,15 +2,12 @@ package kr.hhplus.be.server.domain.reservation.model;
 
 
 import kr.hhplus.be.server.common.enums.ReservationStatus;
-import kr.hhplus.be.server.exception.ApiException;
-import kr.hhplus.be.server.exception.ErrorCode;
 
 public class Reservation {
     private Long id;
     private final Long userId;
     private final Long seatId;
     private  ReservationStatus status;
-    private static final Integer timeOutMin = 5;
 
     public Reservation(Long id, Long userId, Long seatId, ReservationStatus status) {
         this.id = id;
@@ -53,15 +50,7 @@ public class Reservation {
         );
     }
 
-    public void hold(Long userId) {
-        if(!this.userId.equals(userId)) {
-            throw new ApiException(ErrorCode.RESERVATION_USER_NOT_MATCH);
-        }
-
-        if(this.status.equals(ReservationStatus.CANCELD)) {
-            throw new ApiException(ErrorCode.RESERVATION_CANCELD);
-        }
-
+    public void hold() {
         this.status = ReservationStatus.HOLD;
     }
 
@@ -77,11 +66,11 @@ public class Reservation {
         this.id = id;
     }
 
-    public void enable() {
-        this.status = ReservationStatus.AVAILABLE;
-    }
-
     public void expire() {
         this.status = ReservationStatus.EXPIRED;
+    }
+
+    public boolean isCompleted() {
+        return this.status.equals(ReservationStatus.COMPLETED);
     }
 }

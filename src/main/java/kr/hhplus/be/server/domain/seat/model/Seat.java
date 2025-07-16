@@ -1,22 +1,18 @@
 package kr.hhplus.be.server.domain.seat.model;
 
 import kr.hhplus.be.server.common.enums.SeatStatus;
-import kr.hhplus.be.server.exception.NotAvailableSeatException;
-import kr.hhplus.be.server.exception.ErrorCode;
 
 public class Seat {
     private Long id;
     private final Long concertId;
     private final Long price;
     private SeatStatus seatStatus;
-    private Long assignedUserId;
 
-    public Seat(Long id, Long concertId, Long price, SeatStatus seatStatus, Long assignedUserId) {
+    public Seat(Long id, Long concertId, Long price, SeatStatus seatStatus) {
         this.id = id;
         this.concertId = concertId;
         this.price = price;
         this.seatStatus = seatStatus;
-        this.assignedUserId = assignedUserId;
     }
 
     public Long getId() {
@@ -35,38 +31,42 @@ public class Seat {
         return seatStatus;
     }
 
-    public Long getAssignedUserId() {
-        return assignedUserId;
-    }
 
     public void assignId(Long id) {
         this.id = id;
     }
 
-    public static Seat create(Long concertId, Long price, Long userId) {
+    public static Seat create(Long concertId, Long price) {
         return new Seat(
                 null,
                 concertId,
                 price,
-                SeatStatus.AVAILABLE,
-                userId
+                SeatStatus.AVAILABLE
         );
     }
 
-    public static Seat reconstitute(Long id, Long concertId, Long price, SeatStatus seatStatus, Long assignedUserId) {
+    public static Seat reconstitute(Long id, Long concertId, Long price, SeatStatus seatStatus) {
         return new Seat(
                 id,
                 concertId,
                 price,
-                seatStatus,
-                assignedUserId
+                seatStatus
         );
     }
 
+    public boolean isAvailable() {
+        return this.seatStatus.equals(SeatStatus.AVAILABLE);
+    }
+
+    public boolean isHold() {
+        return this.seatStatus.equals(SeatStatus.HOLD);
+    }
+
+    public boolean isReserved() {
+        return this.seatStatus.equals(SeatStatus.RESERVED);
+    }
+
     public void hold() {
-        if(!this.seatStatus.equals(SeatStatus.AVAILABLE)) {
-            throw new NotAvailableSeatException(ErrorCode.SEAT_NOT_AVAILABLE);
-        }
         this.seatStatus = SeatStatus.HOLD;
     }
 
@@ -74,20 +74,15 @@ public class Seat {
         this.seatStatus = SeatStatus.AVAILABLE;
     }
 
-    public boolean isAvailable() {
-        return this.seatStatus.equals(SeatStatus.AVAILABLE);
-    }
-
     public void reserve() {
         this.seatStatus = SeatStatus.RESERVED;
     }
 
-    public void assignAndHold(Long userId) {
-        this.hold();
-        this.assignedUserId = userId;
-    }
-
     public void expire() {
         this.seatStatus = SeatStatus.EXPIRED;
+    }
+
+    public void cancel() {
+        this.seatStatus = SeatStatus.CANCELED;
     }
 }
