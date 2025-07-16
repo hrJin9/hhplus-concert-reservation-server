@@ -1,13 +1,12 @@
 package kr.hhplus.be.server.application.reservation;
 
+import kr.hhplus.be.server.application.reservation.dto.CancelReservationResult;
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationCommand;
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationResult;
 import kr.hhplus.be.server.application.seat.SeatCommandService;
-import kr.hhplus.be.server.common.enums.ReservationStatus;
-import kr.hhplus.be.server.domain.seat.model.Seat;
+import kr.hhplus.be.server.application.seat.dto.CancelSeatResult;
 import kr.hhplus.be.server.domain.reservation.model.Reservation;
 import kr.hhplus.be.server.domain.seat.repository.SeatLockRepository;
-import kr.hhplus.be.server.domain.seat.repository.SeatRepository;
 import kr.hhplus.be.server.domain.reservation.repository.ReservationRepository;
 import kr.hhplus.be.server.exception.ApiException;
 import kr.hhplus.be.server.exception.ErrorCode;
@@ -15,20 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 public class ReservationCommandService {
     private final SeatLockRepository seatLockRepository;
     private final SeatCommandService seatCommandService;
-    private final SeatRepository seatRepository;
     private final ReservationRepository reservationRepository;
 
-    public ReservationCommandService(SeatLockRepository seatLockRepository, SeatCommandService seatCommandService, SeatRepository seatRepository, ReservationRepository reservationRepository) {
+    public ReservationCommandService(SeatLockRepository seatLockRepository, SeatCommandService seatCommandService, ReservationRepository reservationRepository) {
         this.seatLockRepository = seatLockRepository;
         this.seatCommandService = seatCommandService;
-        this.seatRepository = seatRepository;
         this.reservationRepository = reservationRepository;
     }
 
@@ -57,10 +53,11 @@ public class ReservationCommandService {
     @Transactional
     public PlaceReservationResult reserve(Long userId, PlaceReservationCommand command) {
         // 좌석 예약 대기 처리
-        seatCommandService.reserveSeat(userId, command.seatId());
+        seatCommandService.reserve(userId, command.seatId());
 
         // 예약 내역 저장
         Reservation reservation = Reservation.create(userId, command.seatId());
+        reservation.hold();
         Reservation saved = reservationRepository.save(reservation);
 
         return PlaceReservationResult.from(saved);
@@ -75,9 +72,41 @@ public class ReservationCommandService {
 
         for (Reservation reservation : expiredReservations) {
             reservation.expire();
-            seatCommandService.expireSeat(reservation.getSeatId());
+            seatCommandService.expire(reservation.getSeatId());
         }
 
         reservationRepository.saveAll(expiredReservations);
     }
+
+
+    /**
+     * 결제된 예약을 취소한다.
+     * @param userId
+     * @param reservationId
+     */
+    @Transactional
+    public CancelReservationResult cancel(Long userId, Long reservationId) {
+        // 예약 취소
+        Reservation reservation = reservationRepository.findById(reservationId);
+        if (!reservation.getUserId().equals(userId)) {
+            throw new ApiException(ErrorCode.RESERVATION_USER_NOT_MATCH);
+        }
+        if (!reservation.isCompleted()) {
+            throw new ApiException(ErrorCode.RESERVATION_NOT_COMPLETED);
+        }
+
+        reservation.cancel();
+        reservationRepository.save(reservation);
+
+        // 좌석 취소
+        CancelSeatResult canceledSeat = seatCommandService.cancel(reservation.getSeatId());
+
+        return CancelReservationResult.of(
+                reservation.getId(),
+                canceledSeat.seatId(),
+                reservation.getStatus(),
+                canceledSeat.seatStatus()
+        );
+    }
+
 }

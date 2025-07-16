@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class PaymentCommandService {
     private final SeatLockRepository seatLockRepository;
-    private final ReservationLockRepository reservationLockRepository;
     private final PointLockRepository pointLockRepository;
-    private final ReservationRepository reservationRepository;
+    private final ReservationLockRepository reservationLockRepository;
     private final PointCommandService pointCommandService;
     private final SeatCommandService seatCommandService;
+    private final ReservationRepository reservationRepository;
     private final PaymentRepository paymentRepository;
 
     public PaymentCommandService(SeatLockRepository seatLockRepository, ReservationLockRepository reservationLockRepository, PointLockRepository pointLockRepository, ReservationRepository reservationRepository, PointCommandService pointCommandService, SeatCommandService seatCommandService, PaymentRepository paymentRepository) {
@@ -88,7 +88,7 @@ public class PaymentCommandService {
         reservationRepository.save(reservation);
 
         // 좌석 확정
-        seatCommandService.confirmSeat(userId, reservation.getSeatId());
+        seatCommandService.confirm(reservation.getSeatId());
 
         return PlacePaymentResult.from(savedPayment);
     }

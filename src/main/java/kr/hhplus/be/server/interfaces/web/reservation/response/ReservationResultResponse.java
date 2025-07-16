@@ -1,13 +1,15 @@
 package kr.hhplus.be.server.interfaces.web.reservation.response;
 
-import kr.hhplus.be.server.application.reservation.dto.PlaceReservationResult;
+import kr.hhplus.be.server.common.enums.ReservationStatus;
 
 public record ReservationResultResponse(
-        Long reservationId
+        Long reservationId,
+        ReservationStatus reservationStatus
 ) {
-    public static ReservationResultResponse from(PlaceReservationResult result) {
+    public static ReservationResultResponse of(Long reservationId, ReservationStatus reservationStatus) {
         return new ReservationResultResponse(
-                result.reservationId()
+                reservationId,
+                reservationStatus
         );
     }
 }

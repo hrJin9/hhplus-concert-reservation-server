@@ -1,10 +1,12 @@
 package kr.hhplus.be.server.interfaces.web.reservation;
 
 import jakarta.validation.Valid;
+import kr.hhplus.be.server.application.reservation.dto.CancelReservationResult;
 import kr.hhplus.be.server.application.reservation.dto.PlaceReservationResult;
 import kr.hhplus.be.server.application.reservation.ReservationCommandService;
 import kr.hhplus.be.server.config.resolver.QueueAuth;
 import kr.hhplus.be.server.config.resolver.ValidQueueToken;
+import kr.hhplus.be.server.interfaces.web.reservation.request.CancelReservationRequest;
 import kr.hhplus.be.server.interfaces.web.reservation.request.PlaceReservationRequest;
 import kr.hhplus.be.server.interfaces.web.reservation.response.ReservationResultResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,23 @@ public class ReservationCommandController {
     public ResponseEntity<ReservationResultResponse> reserve(@QueueAuth ValidQueueToken queueToken,
                                                             @RequestBody @Valid PlaceReservationRequest request
     ) {
-        PlaceReservationResult reservationResult = reservationCommandService.placeWithLock(queueToken.userId(), request.toCommand());
-        return ResponseEntity.ok(ReservationResultResponse.from(reservationResult));
+        PlaceReservationResult result = reservationCommandService.placeWithLock(queueToken.userId(), request.toCommand());
+        ReservationResultResponse response = ReservationResultResponse.of(
+                result.reservationId(),
+                result.reservationStatus()
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<ReservationResultResponse> cancel(@QueueAuth ValidQueueToken queueToken,
+                                                            @RequestBody @Valid CancelReservationRequest request) {
+
+        CancelReservationResult result = reservationCommandService.cancel(queueToken.userId(), request.reservationId());
+        ReservationResultResponse response = ReservationResultResponse.of(
+                result.reservationId(),
+                result.reservationStatus()
+        );
+        return ResponseEntity.ok(response);
     }
 }
