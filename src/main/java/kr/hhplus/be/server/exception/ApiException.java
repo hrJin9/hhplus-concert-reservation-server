@@ -1,18 +1,22 @@
 package kr.hhplus.be.server.exception;
 
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 
-@Getter
 public class ApiException extends RuntimeException {
-    private final HttpStatus status;
+    private final ErrorCode errorCode;
     private final LocalDateTime time;
 
-    public ApiException(HttpStatus status, ErrorCode errorCode) {
+    public ApiException(ErrorCode errorCode) {
         super(errorCode.getMessage());
-        this.status = status;
+        this.errorCode = errorCode;
         this.time = LocalDateTime.now();
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 }

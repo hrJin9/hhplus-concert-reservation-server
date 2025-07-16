@@ -1,0 +1,60 @@
+package kr.hhplus.be.server.infrastructure.repository;
+
+import kr.hhplus.be.server.exception.PointNotFoundException;
+import kr.hhplus.be.server.domain.point.model.Point;
+import kr.hhplus.be.server.domain.point.repository.PointRepository;
+import kr.hhplus.be.server.exception.ErrorCode;
+import kr.hhplus.be.server.infrastructure.persistence.PointEntity;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class PointJpaRepository implements PointRepository {
+    private final SpringPointJpa jpa;
+
+    public PointJpaRepository(SpringPointJpa jpa) {
+        this.jpa = jpa;
+    }
+
+    @Override
+    public Point findByUserId(Long userId) {
+        return jpa.findByUserId(userId)
+                .map(this::toDomain)
+                .orElseThrow(() -> new PointNotFoundException(ErrorCode.POINT_NOT_FOUND));
+    }
+
+    @Override
+    public Point save(Point d) {
+        PointEntity e = toEntity(d);
+        PointEntity saved = jpa.save(e);
+        d.assignId(saved.id);
+
+        return d;
+    }
+
+    @Override
+    public Point findOrCreatePoint(Long userId) {
+        PointEntity e = jpa.findByUserId(userId)
+                .orElseGet(() -> {
+                    Point d = Point.create(userId);
+                    return jpa.save(toEntity(d));
+                });
+
+        return toDomain(e);
+    }
+
+    private Point toDomain(PointEntity e) {
+        return new Point(
+                e.id,
+                e.userId,
+                e.point
+        );
+    }
+
+    private PointEntity toEntity(Point d) {
+        PointEntity e = new PointEntity();
+        e.id = d.getId();
+        e.userId = d.getUserId();
+        e.point = d.getPoint();
+        return e;
+    }
+}

@@ -1,15 +1,17 @@
 package kr.hhplus.be.server.infrastructure.persistence;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.TimeToLive;
+import kr.hhplus.be.server.common.enums.QueueStatus;
 
-@RedisHash("queue_token")
+import java.time.LocalDateTime;
+
 public class QueueTokenEntity {
-    @Id
+    public String id;
     public Long userId;
-    public Long issuedAt;
-    public Long expiresAt;
-    @TimeToLive
-    public Long ttlInSeconds;
+    public QueueStatus queueStatus;
+    public LocalDateTime issuedAt;
+    public LocalDateTime expiresAt;
+    public Integer ttlInSeconds;
+
+    public QueueTokenEntity() {
+    }
 }

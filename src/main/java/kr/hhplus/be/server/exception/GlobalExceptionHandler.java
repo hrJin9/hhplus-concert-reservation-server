@@ -16,12 +16,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ApiException.class)
     public ResponseEntity<ErrorResponse> handleApiException(ApiException e) {
         log.warn("ApiException 발생 - status: {}, message: {}, time: {}",
-                e.getStatus(), e.getMessage(), e.getTime());
+                e.getErrorCode().getCode(), e.getErrorCode().getMessage(), e.getTime());
 
         return ResponseEntity
-                .status(e.getStatus())
-                .body(new ErrorResponse(e.getStatus(), e.getMessage(), e.getTime(), null));
+                .status(e.getErrorCode().getStatus())
+                .body(new ErrorResponse(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), e.getTime(), null));
     }
+
+    @ExceptionHandler(value = DomainException.class)
+    public ResponseEntity<ErrorResponse> handleDomainException(DomainException e) {
+        log.warn("DomainException 발생 - status: {}, message: {}, time: {}",
+                e.errorCode().getStatus(), e.errorCode().getMessage(), e.getTime());
+
+        return ResponseEntity
+                .status(e.errorCode().getStatus())
+                .body(new ErrorResponse(e.errorCode().getStatus(), e.getMessage(), e.getTime(), null));
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
